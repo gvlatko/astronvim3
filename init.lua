@@ -16,16 +16,13 @@ return {
       --   ["remote3"] = "github_user", -- GitHub user assume AstroNvim fork
     },
   },
-
   -- Set colorscheme to use
-  colorscheme = "astrodark",
-
+  colorscheme = "darcula",
   -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
     virtual_text = true,
     underline = true,
   },
-
   lsp = {
     -- customize lsp formatting options
     formatting = {
@@ -51,8 +48,14 @@ return {
     servers = {
       -- "pyright"
     },
+    mappings = {
+      n = {
+        -- ["<leader>lf"] = false -- disable formatting keymap
+        -- in kitty terminal you will have to unbind cmd+enter for this to work
+        ["<A-CR>"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
+      },
+    },
   },
-
   -- Configure require("lazy").setup() options
   lazy = {
     defaults = { lazy = true },
@@ -63,7 +66,6 @@ return {
       },
     },
   },
-
   -- This function is run last and is a good place to configuring
   -- augroups/autocommands and custom filetypes also this just pure lua so
   -- anything that doesn't fit in the normal config locations above can go here
@@ -81,4 +83,47 @@ return {
     --   },
     -- }
   end,
+
+  -- add new user interface icon
+  icons = {
+    VimIcon = "",
+    ScrollText = "",
+    GitBranch = "",
+    GitAdd = "",
+    GitChange = "",
+    GitDelete = "",
+  },
+  -- modify variables used by heirline but not defined in the setup call directly
+  heirline = {
+    -- define the separators between each section
+    separators = {
+      left = { "", " " }, -- separator for the left side of the statusline
+      right = { " ", "" }, -- separator for the right side of the statusline
+      tab = { "", "" },
+    },
+    -- add new colors that can be used by heirline
+    colors = function(hl)
+      local get_hlgroup = require("astronvim.utils").get_hlgroup
+      -- use helper function to get highlight group properties
+      local comment_fg = get_hlgroup("Comment").fg
+      hl.git_branch_fg = comment_fg
+      hl.git_added = comment_fg
+      hl.git_changed = comment_fg
+      hl.git_removed = comment_fg
+      hl.blank_bg = get_hlgroup("Folded").fg
+      hl.file_info_bg = get_hlgroup("Visual").bg
+      hl.nav_icon_bg = get_hlgroup("String").fg
+      hl.nav_fg = hl.nav_icon_bg
+      hl.folder_icon_bg = get_hlgroup("Error").fg
+      return hl
+    end,
+    attributes = {
+      mode = { bold = true },
+    },
+    icon_highlights = {
+      file_icon = {
+        statusline = false,
+      },
+    },
+  },
 }

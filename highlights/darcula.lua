@@ -1,7 +1,5 @@
-return { -- this table overrides highlights in all themes
-  -- Normal = { bg = "#000000" },
+return {
   ["@tag"] = { fg = "#FFC66D" },
-  ["@type"] = { fg = "#FFC66D" },
   ["@constructor"] = { fg = "#FFC66D" },
   ["@tag.attribute"] = { fg = "#A9B7C6" },
   ["@include"] = { fg = "#CC7832" },
