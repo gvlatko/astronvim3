@@ -12,13 +12,13 @@ return {
   { "doums/darcula", name = "darcula" },
 
   {
-    "jose-elias-alvarez/typescript.nvim",
-    after = "mason-lspconfig.nvim",
-    config = function()
-      require("typescript").setup {
-        server = astronvim.lsp.server_settings "tsserver",
-      }
-    end,
+    "jose-elias-alvarez/typescript.nvim", -- add lsp plugin
+    {
+      "williamboman/mason-lspconfig.nvim",
+      opts = {
+        ensure_installed = { "tsserver" }, -- automatically install lsp
+      },
+    },
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -26,6 +26,20 @@ return {
     config = function() require("treesitter-context").setup {} end,
   },
   { "nvim-treesitter/playground", lazy = false },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      local cmp = require "cmp"
+
+      opts.sources = cmp.config.sources {
+        { name = "nvim_lsp", priority = 1000 },
+        { name = "buffer", priority = 750 },
+        { name = "luasnip", priority = 500 },
+        { name = "path", priority = 250 },
+      }
+      return opts
+    end,
+  },
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -68,6 +82,13 @@ return {
         },
       }
     end,
+  },
+  {
+    "gvlatko/inline-relative-numbers.nvim",
+    -- "inline-relative-numbers.nvim",
+    -- dir = "~/Code/inline-relative-numbers.nvim",
+    config = function() require("inline-relative-numbers").setup {} end,
+    event = "BufRead",
   },
   {
     "rebelot/heirline.nvim",

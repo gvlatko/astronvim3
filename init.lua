@@ -48,6 +48,12 @@ return {
     servers = {
       -- "pyright"
     },
+    setup_handlers = {
+      setup_handlers = {
+        -- add custom handler
+        tsserver = function(_, opts) require("typescript").setup { server = opts } end,
+      },
+    },
     mappings = {
       n = {
         -- ["<leader>lf"] = false -- disable formatting keymap
